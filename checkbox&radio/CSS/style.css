@@ -1,0 +1,82 @@
+.radio_label1{
+    background: url("../IMG/1.png");
+    display: inline-block;
+    width: 18px;
+    height: 22px;
+    left: 0;
+    position: relative;
+    background-position: -23px -5px;
+    background-repeat: no-repeat;
+}
+/*属性选择器试验*/
+input[class='radio']{
+    display: none;
+}
+input:checked + .radio_label1{
+    background-position: -59px -5px;
+}
+.checkbox{
+    display: none;
+}
+.checkbox_label1{
+    background: url("../IMG/1.png");
+    display: inline-block;
+    width: 19px;
+    height: 22px;
+    left: 0;
+    position: relative;
+    background-position: -23px -30px;
+    background-repeat: no-repeat;
+}
+input:checked + .checkbox_label1{
+    background-position: -59px -29px;
+}
+.radio_label2{
+    padding:4px 4px;
+    width:6px;
+    height:6px;
+    border:1px solid #d9d9d9;
+    position: relative;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 1px;
+}
+input:checked + .radio_label2::after{
+    display: inline-block;
+    content: '\2022';
+    width: 7px;
+    height: 4px;
+    color: #d73d32;
+    font-size: 22px;
+    padding: 5px 5px 5px 2px;
+    position: absolute;
+    left: -1px;
+    top: -1px;
+    line-height: 1px;
+    border: 1px solid #d73d32;
+    border-radius: 50%;
+    margin-right: 1px;
+}
+.checkbox_label2{
+    padding: 4px 4px;
+    width: 5px;
+    height: 5px;
+    border: 1px solid #d9d9d9;
+    position: relative;
+    display: inline-block;
+    margin-right: 2px;
+}
+input:checked + .checkbox_label2::after{
+    content: '\2713';
+    color: #d73d32;
+    padding: 4px 4px 4px 1px;
+    width: 8px;
+    height: 5px;
+    line-height: 4px;
+    border: 1px solid #d73d32;
+    position: absolute;
+    left: -1px;
+    top: -1px;
+    display: inline-block;
+    margin-right: 2px;
+}
