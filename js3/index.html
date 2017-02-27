@@ -31,7 +31,7 @@
         var ul=document.getElementById('source');
         var li=ul.getElementsByTagName('li');
         var resort = document.getElementById('resort');
-
+        var btn=document.getElementById('sort-btn');
 
     /**
      * getData方法
@@ -95,7 +95,9 @@
         var aqiData = getData();
         aqiData = sortAqiData(aqiData);
         render(aqiData);
-
+        resort.style.display='';
+        btn.style.display='none';
+        btn.disabled=true;
     }
 
     function init() {
@@ -111,17 +113,10 @@
                 element["on"+type]=handler;
             }
         }
-        var btn=document.getElementById('sort-btn');
-            addHandler(btn,"click",function(){
-            btnHandle();
-            resort.style.display='';
-            btn.style.display='none';
-            btn.disabled=true;
-        });
+        addHandler(btn,"click",btnHandle);
     }
 
     init();
-
 </script>
 </body>
 </html>
