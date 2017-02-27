@@ -54,11 +54,12 @@
         showData.sort(function (a,b) {
             return b[1]-a[1];
         });
-        var li=null;
+        var li = null;
+        var num = ["一", "二", "三", "四", "五", "六", "七","八","九","十"];
       for(var i = 0;i<showData.length;i++)
       {
           li=document.createElement("li");
-          li.innerHTML="<a>"+"第"+(i+1)+"名:"+"&nbsp;&nbsp;"+showData[i][0]+"&nbsp;&nbsp;"+","+"&nbsp;&nbsp;"+showData[i][1]+"</a>";
+          li.innerHTML="<a>"+"第"+num[i]+"名:"+"&nbsp;&nbsp;"+showData[i][0]+"&nbsp;&nbsp;"+","+"&nbsp;&nbsp;"+showData[i][1]+"</a>";
           li.style.listStyle='none';
           aqi_list.appendChild(li);
       }
