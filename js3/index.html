@@ -28,10 +28,10 @@
 <button id="sort-btn">排序</button>
 
 <script type="text/javascript">
-        var ul=document.getElementById('source');
-        var li=ul.getElementsByTagName('li');
+        var ul = document.getElementById('source');
+        var li = ul.getElementsByTagName('li');
         var resort = document.getElementById('resort');
-        var btn=document.getElementById('sort-btn');
+        var btn = document.getElementById('sort-btn');
 
     /**
      * getData方法
@@ -39,19 +39,19 @@
      * 返回一个数组，格式见函数中示例
      */
     function getData() {
-        var data = new Array();
-        for(var k=0;k<li.length;k++){
+        var data = [];
+      /*  for(var k=0;k<li.length;k++){
             data[k]=new Array();
             for(var j=0;j<2;j++){
                 data[k][j]="";
             }
         }
-
-    for(var i=0;i<li.length;i++){
-
-        data[i][0]=li[i].innerHTML.replace(/空气质量：<b>[\w]+<\/b>/g,"");
-        data[i][1]=li[i].childNodes[1].innerHTML;
-    }
+     */
+        for(var i=0;i<li.length;i++){
+            //data[i][0]=li[i].innerText.replace(/空气质量：[\w]+/g,"");
+            //data[i][1]=li[i].childNodes[1].innerHTML;
+            data.push([li[i].innerText.replace(/空气质量：[\w]+/g,""),li[i].childNodes[1].innerHTML]);
+        }
         /*
          data = [
          ["北京", 90],
@@ -59,6 +59,7 @@
          ……
          ]
          */
+        console.log(data);
         return data;
     }
 
@@ -82,27 +83,26 @@
     function render(data) {
 
         var li = null;
+        var num = ["一", "二", "三", "四", "五", "六", "七","八","九","十"];
         for(var i=0;i<data.length;i++){
-
             li=document.createElement('li');
-            li.innerHTML="第"+(i+1)+"名："+data[i][0]+"空气质量："+data[i][1];
+            li.innerHTML="第"+num[i]+"名："+data[i][0]+"空气质量："+data[i][1];
             resort.appendChild(li);
         }
-
     }
 
     function btnHandle() {
         var aqiData = getData();
         aqiData = sortAqiData(aqiData);
         render(aqiData);
-        resort.style.display='';
-        btn.style.display='none';
-        btn.disabled=true;
+        resort.style.display = '';
+        btn.style.display = 'none';
+        btn.disabled = true;
     }
 
     function init() {
 
-        resort.style.display='none';
+        resort.style.display = 'none';
         // 在这下面给sort-btn绑定一个点击事件，点击时触发btnHandle函数
         var addHandler=function (element,type,handler) {
             if (element.addEventListener){
@@ -110,7 +110,7 @@
             }else if (element.attachEvent){
                 element.attachEvent("on"+type,handler)
             }else {
-                element["on"+type]=handler;
+                element["on"+type] = handler;
             }
         }
         addHandler(btn,"click",btnHandle);
