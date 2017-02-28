@@ -111,9 +111,10 @@
     function clickelement(event) {
         event = getEvent(event);
         target = getTarget(event);
-        console.log(target.index);
-        number.splice(target.index,1);
-        append();
+        if (target.tagName == 'A') {
+            number.splice(target.index, 1);
+            append();
+        }
     }
 
      function  append() {
