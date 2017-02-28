@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>IFE JavaScript Task 05</title>
+</head>
+<body>
+<div style="height: 50px;clear: both;">
+    <input type="text" placeholder="请输入数字"/>
+    <div id="fun" class="clear:both">
+    <button type="button">左侧入</button>
+    <button type="button">右侧入</button>
+    &nbsp;
+    <button type="button">左侧出</button>
+    <button type="button">右侧出</button>
+    </div>
+    </div>
+    <div>
+        <ul id="show" style="list-style: none;height: 150px;vertical-align: bottom">
+      <!--<p id="show" style="height: 200px;width: 100%"></p>-->
+        </ul>
+    </div>
+
+<script>
+
+    number = [];
+    var a = null;
+    var input = null;
+    var index = 0;
+    var fun = document.getElementById('fun');
+    var show = document.getElementById('show');
+    fun.style.display="inline-block";
+
+    function addHandler(element,type,handler) {
+        if (element.addEventListener){
+            element.addEventListener(type,handler,false);
+        }else if (element.attachEvent){
+            element.attachEvent("on"+type,handler);
+        }else {
+            element["on"+type] = null;
+        }
+    }
+
+   function getEvent(event) {
+        return event = event ? event : window.event;
+   }
+
+   function getTarget(event) {
+        return target = event.target || event.srcElement;
+   }
+
+    addHandler(fun,'click',choice);
+
+    (function forTest(){                //生成一段随机数据方便测试
+        for (var i = 1;i<=10;i++){
+            number.push(Math.floor(Math.random()*100+10));
+        }
+           append();
+    })()
+
+    function choice(event) {
+        var event = getEvent(event);
+        target = getTarget(event);
+        input = document.getElementsByTagName('INPUT')[0].value;
+        switch(target.innerText){
+            case '左侧入':
+                leftIn();
+                break;
+
+            case '右侧入':
+                rightIn();
+                break;
+
+            case '左侧出':
+                leftOut();
+                break;
+
+            case '右侧出':
+                rightOut();
+                break;
+
+            default:
+                console.log("wrong!");
+        }
+    }
+
+    function leftIn() {
+        if (!error(input)){
+            return false;
+        }
+        number.unshift(input);
+        append();
+    }
+
+     function rightIn() {
+        if (!error(input)){
+            return false;
+        }
+        number.push(input);
+        append();
+     }
+
+     function leftOut() {
+        number.shift();
+        append();
+     }
+
+     function rightOut() {
+        number.pop();
+        append();
+     }
+
+    addHandler(show,"click",clickelement);
+
+    function clickelement(event) {
+        event = getEvent(event);
+        target = getTarget(event);
+        if (target.tagName=='LI') {
+            number.splice(target.index, 1);
+            append();
+        }
+    }
+
+     function  append() {
+        while (show.hasChildNodes()){
+            show.removeChild(show.firstChild);
+        }
+
+        index = 0;
+        for (var i = 0; i<number.length;i++){
+            li=document.createElement('li');
+            li.innerHTML = number[i];
+            //li.style.padding=number[i]+'px '+'10px '+'0px '+'10px';
+            li.style.height=(Number(number[i])+10)+'px';
+            li.style.marginRight='10px';
+            li.style.background='red';
+            li.style.color='white';
+            li.style.fontSize='10px';
+            li.style.textAlign='center';
+            li.style.width='22px';
+            li.style.display='inline-block';
+            li.style.verticalAlign='bottom';
+            li.index=index++;
+            show.appendChild(li);
+        }
+     }
+
+     function error(input) {
+        var reg = new RegExp("^[0-9]+$");
+        if(input==""){
+            alert("请输入内容！");
+            return false;
+        }else if(!reg.test(input)){
+            alert("请输入数字！");
+            return false;
+        }else if(input.length>20){
+            alert("数字长度溢出！");
+            return false;
+        }else
+            return true;
+     }
+
+</script>
+
+</body>
+</html>
