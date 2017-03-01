@@ -8,19 +8,20 @@
 <div style="height: 50px;clear: both;">
     <input type="text" placeholder="请输入数字"/>
     <div id="fun" class="clear:both">
-    <button type="button">左侧入</button>
-    <button type="button">右侧入</button>
-    &nbsp;
-    <button type="button">左侧出</button>
-    <button type="button">右侧出</button>
+        <button type="button">左侧入</button>
+        <button type="button">右侧入</button>
+        &nbsp;
+        <button type="button">左侧出</button>
+        <button type="button">右侧出</button>
     </div>
-    </div>
-    <div>
-        <ul id="show" style="list-style: none;height: 150px;vertical-align: bottom">
-      <!--<p id="show" style="height: 200px;width: 100%"></p>-->
-        </ul>
-    </div>
-
+</div>
+<div>
+    <ul id="show" style="list-style: none;height: 200px;">
+        <!--<p id="show" style="height: 200px;width: 100%"></p>-->
+    </ul>
+</div>
+<label style="margin-left: 130px">冒泡排序：</label>
+<button type="button" id="sort">演示</button>
 <script>
 
     number = [];
@@ -29,40 +30,41 @@
     var index = 0;
     var fun = document.getElementById('fun');
     var show = document.getElementById('show');
-    fun.style.display="inline-block";
+    var sort = document.getElementById('sort');
+    fun.style.display = "inline-block";
 
-    function addHandler(element,type,handler) {
-        if (element.addEventListener){
-            element.addEventListener(type,handler,false);
-        }else if (element.attachEvent){
-            element.attachEvent("on"+type,handler);
-        }else {
-            element["on"+type] = null;
+    function addHandler(element, type, handler) {
+        if (element.addEventListener) {
+            element.addEventListener(type, handler, false);
+        } else if (element.attachEvent) {
+            element.attachEvent("on" + type, handler);
+        } else {
+            element["on" + type] = null;
         }
     }
 
-   function getEvent(event) {
+    function getEvent(event) {
         return event = event ? event : window.event;
-   }
+    }
 
-   function getTarget(event) {
+    function getTarget(event) {
         return target = event.target || event.srcElement;
-   }
+    }
 
-    addHandler(fun,'click',choice);
+    addHandler(fun, 'click', choice);
 
-    (function forTest(){                //生成一段随机数据方便测试
-        for (var i = 1;i<=10;i++){
-            number.push(Math.floor(Math.random()*100+10));
+    (function forTest() {                //生成一段随机数据方便测试
+        for (var i = 1; i <= 10; i++) {
+            number.push(Math.floor(Math.random() * 100 + 10));
         }
-           append();
+        append();
     })()
 
     function choice(event) {
         var event = getEvent(event);
         target = getTarget(event);
         input = document.getElementsByTagName('INPUT')[0].value;
-        switch(target.innerText){
+        switch (target.innerText) {
             case '左侧入':
                 leftIn();
                 break;
@@ -85,80 +87,140 @@
     }
 
     function leftIn() {
-        if (!error(input)){
+        if (!error(input)) {
             return false;
         }
         number.unshift(input);
         append();
     }
 
-     function rightIn() {
-        if (!error(input)){
+    function rightIn() {
+        if (!error(input)) {
             return false;
         }
         number.push(input);
         append();
-     }
+    }
 
-     function leftOut() {
+    function leftOut() {
         number.shift();
         append();
-     }
+    }
 
-     function rightOut() {
+    function rightOut() {
         number.pop();
         append();
-     }
+    }
 
-    addHandler(show,"click",clickelement);
+    addHandler(show, "click", clickelement);
 
     function clickelement(event) {
         event = getEvent(event);
         target = getTarget(event);
-        if (target.tagName=='LI') {
+        if (target.tagName == 'LI') {
             number.splice(target.index, 1);
             append();
         }
     }
 
-     function  append() {
-        while (show.hasChildNodes()){
+    function append() {
+        while (show.hasChildNodes()) {
             show.removeChild(show.firstChild);
         }
 
         index = 0;
-        for (var i = 0; i<number.length;i++){
-            li=document.createElement('li');
-            li.innerHTML = number[i];
+        for (var i = 0; i < number.length; i++) {
+            li = document.createElement('li');
+            span = document.createElement('span');
             //li.style.padding=number[i]+'px '+'10px '+'0px '+'10px';
-            li.style.height=(Number(number[i])+10)+'px';
-            li.style.marginRight='10px';
-            li.style.background='red';
-            li.style.color='white';
-            li.style.fontSize='10px';
-            li.style.textAlign='center';
-            li.style.width='22px';
-            li.style.display='inline-block';
-            li.style.verticalAlign='bottom';
-            li.index=index++;
+            li.style.height = '100%';
+            li.style.marginRight = '8px';
+            li.style.color = 'black';
+            li.style.fontSize = '10px';
+            li.style.textAlign = 'center';
+            li.style.width = '22px';
+            li.style.position = 'relative';
+            li.innerHTML = number[i];
+            span.style.display = 'block';
+            span.style.width = '25px';
+            span.style.height = (Number(number[i]) * 1.5) + 'px';
+            span.style.background = 'red';
+            span.style.position = 'absolute';
+            span.style.bottom = '0';
+            li.style.float = 'left';
+            li.index = index++;
+            li.appendChild(span);
             show.appendChild(li);
         }
-     }
+    }
 
-     function error(input) {
+    function error(input) {
         var reg = new RegExp("^[0-9]+$");
-        if(input==""){
+        if (input == "") {
             alert("请输入内容！");
             return false;
-        }else if(!reg.test(input)){
+        } else if (!reg.test(input)) {
             alert("请输入数字！");
             return false;
-        }else if(input.length>20){
+        } else if (input.length > 20) {
             alert("数字长度溢出！");
             return false;
-        }else
+        } else if (input>100 || input<10){
+            alert("数字大小溢出 范围[10,100]");
+        } else
             return true;
-     }
+    }
+
+
+    addHandler(sort, 'click', function () {
+        sort.disabled='TRUE';
+        sortClick();
+    });
+
+    function sortClick() {
+        var len = number.length;
+        var i = number.length, j;
+        var pre = null;
+        var next = null;
+        var timeDo = function () {
+            var time1 = window.setTimeout(function () {
+                if (i > 0) {
+                    j = 0;
+                    var time2 = window.setInterval(function () {
+                        if (j < i - 1) {
+                           var pr = document.getElementsByTagName('SPAN')[j];
+                            var nex = document.getElementsByTagName('SPAN')[j + 1];
+                            if (number[j] > number[j + 1]) {
+                                pre = document.getElementsByTagName('LI')[j];
+                                next = document.getElementsByTagName('LI')[j + 1];
+                                pre.style.transform = 'translateX(30px)';
+                                pre.style.transition = 'all 1s ease';
+                                next.style.transform = 'translateX(-30px)';
+                                next.style.transition = 'all 1s ease';
+                                var temp = number[j + 1];
+                                number[j + 1] = number[j];
+                                number[j] = temp;
+                            }
+                            j++;
+                            var time3 = window.setTimeout(append,2000);
+                        }
+                        else {
+                            window.clearInterval(time2);
+                            i--;
+                            timeDo();
+                        }
+                    }, 1150);
+
+
+                } else
+                {
+                    alert("排序完毕！");
+                    return true;
+                }
+            }, 1);
+        };
+        timeDo();
+    }
 
 </script>
 
