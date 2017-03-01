@@ -25,15 +25,15 @@
 <p style="margin-left: 150px;color: red;">请稍等！</p>
 <script>
 
-    number = [];
-    var a = null;
-    var input = null;
-    var index = 0;
+    number = [];    //全局数组，存储输入数据
+    var input = null;   //输入框数据
+    var index = 0;    //li索引
     var fun = document.getElementById('fun');
     var show = document.getElementById('show');
-    var sort = document.getElementById('sort');
+    var sort = document.getElementById('sort');     //排序按钮
     fun.style.display = "inline-block";
 
+    //添加事件监听
     function addHandler(element, type, handler) {
         if (element.addEventListener) {
             element.addEventListener(type, handler, false);
@@ -44,23 +44,28 @@
         }
     }
 
+    //获取event
     function getEvent(event) {
         return event = event ? event : window.event;
     }
 
+    //获取事件目标节点
     function getTarget(event) {
         return target = event.target || event.srcElement;
     }
 
+    //添加对添加删除数字按钮的监听
     addHandler(fun, 'click', choice);
 
-    (function forTest() {                //生成一段随机数据方便测试
+    //生成一段随机数据方便测试
+    (function forTest() {
         for (var i = 1; i <= 10; i++) {
             number.push(Math.floor(Math.random() * 100 + 10));
         }
         append();
     })()
 
+    //获取点击按钮，并执行对应功能
     function choice(event) {
         var event = getEvent(event);
         target = getTarget(event);
@@ -87,6 +92,7 @@
         }
     }
 
+    //左侧入
     function leftIn() {
         if (!error(input)) {
             return false;
@@ -95,6 +101,7 @@
         append();
     }
 
+    //右侧入
     function rightIn() {
         if (!error(input)) {
             return false;
@@ -103,19 +110,23 @@
         append();
     }
 
+    //左侧出
     function leftOut() {
         number.shift();
         append();
     }
 
+    //右侧出
     function rightOut() {
         number.pop();
         append();
     }
 
-    addHandler(show, "click", clickelement);
+    //添加对元素点击的监听，点击元素删除该元素
+    addHandler(show, "click", elementClick);
 
-    function clickelement(event) {
+    //实现点击元素删除该元素
+    function elementClick(event) {
         event = getEvent(event);
         target = getTarget(event);
         if (target.tagName == 'LI') {
@@ -124,11 +135,11 @@
         }
     }
 
+    //重新显示数组元素
     function append() {
         while (show.hasChildNodes()) {
             show.removeChild(show.firstChild);
         }
-
         index = 0;
         for (var i = 0; i < number.length; i++) {
             li = document.createElement('li');
@@ -155,6 +166,7 @@
         }
     }
 
+    //限制非法输入
     function error(input) {
         var reg = new RegExp("^[0-9]+$");
         if (input == "") {
@@ -172,12 +184,13 @@
             return true;
     }
 
-
+    //监听排序按钮
     addHandler(sort, 'click', function () {
         sort.disabled='TRUE';
         sortClick();
     });
 
+    //实现排序功能，动画显示
     function sortClick() {
         var len = number.length;
         var i = number.length, j;
@@ -189,7 +202,7 @@
                     j = 0;
                     var time2 = window.setInterval(function () {
                         if (j < i - 1) {
-                           var pr = document.getElementsByTagName('SPAN')[j];
+                           var pr = document.getElementsByTagName('SPAN')[j];       //按顺序获取相邻，进行比较后移动
                             var nex = document.getElementsByTagName('SPAN')[j + 1];
                             if (number[j] > number[j + 1]) {
                                 pre = document.getElementsByTagName('LI')[j];
@@ -198,7 +211,7 @@
                                 pre.style.transition = 'all 1s ease';
                                 next.style.transform = 'translateX(-30px)';
                                 next.style.transition = 'all 1s ease';
-                                var temp = number[j + 1];
+                                var temp = number[j + 1];       //交换数值
                                 number[j + 1] = number[j];
                                 number[j] = temp;
                             }
@@ -211,8 +224,6 @@
                             timeDo();
                         }
                     }, 1150);
-
-
                 } else
                 {
                     alert("排序完毕！");
