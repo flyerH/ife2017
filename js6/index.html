@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>IFE JavaScript Task 06</title>
+</head>
+<body>
+<div style="position: relative">
+<textarea placeholder="请输入数字" id="input" style="height: 50px;"></textarea>
+<div id="fun" style="display: inline-block;position: absolute;margin-left: 10px">
+    <button type="button">左侧入</button>
+    <button type="button">右侧入</button>
+    &nbsp;
+    <button type="button">左侧出</button>
+    <button type="button">右侧出</button>
+</div>
+</div>
+<div>
+    <p id="show"></p>
+</div>
+<br/>
+<div>
+    <input type="text" placeholder="请输入要搜索的内容" id="search_input"/>
+    <button type="button" id="search_button">查找</button>
+</div>
+<script>
+
+    number = [];        //全局数组，存储输入数据
+    var a = null;       //a节点
+    var input = null;       //输入框数据
+    var index = 0;      //li索引
+    var fun = document.getElementById('fun');
+    var show = document.getElementById('show');
+
+    //添加事件监听
+    function addHandler(element, type, handler) {
+        if (element.addEventListener) {
+            element.addEventListener(type, handler, false);
+        } else if (element.attachEvent) {
+            element.attachEvent("on" + type, handler);
+        } else {
+            element["on" + type] = null;
+        }
+    }
+
+    //获取event
+    function getEvent(event) {
+        return event = event ? event : window.event;
+    }
+
+    //获取事件目标节点
+    function getTarget(event) {
+        return target = event.target || event.srcElement;
+    }
+
+    //添加对添加删除数字按钮的监听
+    addHandler(fun, 'click', choice);
+
+    (function forTest() {                //生成一段测试数据方便测试
+        var textarea=document.getElementById('input');
+        textarea.innerText+="abc,def，ghi、jkl mno pqr"+"\r\n"+"stu";
+        for (var i = 1; i <= 3; i++) {
+            var ranNum = Math.ceil(Math.random() * 25);
+            var temp = String.fromCharCode(65 + ranNum);
+            for (var j = 0; j < 3; j++) {
+                temp = temp.concat(String.fromCharCode(65 + Math.ceil(Math.random() * 25)));
+            }
+            number.push(temp.toLowerCase());
+        }
+        append();
+    })()
+
+    //获取输入内容，并进行分割
+    function getInput() {
+        input = document.getElementById('input').value;
+        var tempArray = input.split(/、|，|,|\n|\r|\s|\t/);
+        return tempArray;
+    }
+
+    //获取点击按钮，并执行对应功能
+    function choice(event) {
+        var event = getEvent(event);
+        target = getTarget(event);
+        input = getInput();
+        switch (target.innerText) {
+            case '左侧入':
+
+                leftIn();
+                break;
+
+            case '右侧入':
+                rightIn();
+                break;
+
+            case '左侧出':
+                leftOut();
+                break;
+
+            case '右侧出':
+                rightOut();
+                break;
+
+            default:
+                console.log("wrong!");
+        }
+    }
+
+    //左侧入
+    function leftIn() {
+        for (var i = 0; i < input.length; i++) {
+            if (!error(input[i])) {
+                return false;
+            }
+        }
+        for (var i = 0; i < input.length; i++) {
+            number.unshift(input[i]);
+        }
+        append();
+    }
+
+    //右侧入
+    function rightIn() {
+        for (var i = 0; i < input.length; i++) {
+            if (!error(input[i])) {
+                return false;
+            }
+        }
+        for (var i = 0; i < input.length; i++) {
+            number.push(input[i]);
+        }
+        append();
+    }
+
+    //左侧出
+    function leftOut() {
+        number.shift();
+        append();
+    }
+
+    //右侧出
+    function rightOut() {
+        number.pop();
+        append();
+    }
+
+    //添加对元素点击的监听，点击元素删除该元素
+    addHandler(show, "click", elementClick);
+
+    //实现点击元素删除该元素
+    function elementClick(event) {
+        event = getEvent(event);
+        target = getTarget(event);
+        if (target.tagName == 'A') {
+            number.splice(target.index, 1);
+            append();
+        }
+    }
+
+    //匹配搜索的元素，并进行特殊标识
+    function searchElement() {
+        var search_input = document.getElementById('search_input').value;
+        var a = document.getElementsByTagName('a');
+        if (search_input == "") {
+            alert("请输入数据！");
+            return false;
+        }
+        if (a.length == 0) {
+            alert("数据不存在！");
+            return false;
+        }
+
+        for (var i = 0; i < a.length; i++) {
+            a[i].innerHTML = a[i].innerText.toString().replace(search_input, "<b style='color: black'>" + search_input + "</b>");
+        }
+
+    }
+
+    //监听搜索按钮
+    addHandler(search_button, "click", searchElement);
+
+    //重新显示数组元素
+    function append() {
+        while (show.hasChildNodes()) {
+            show.removeChild(show.firstChild);
+        }
+
+        index = 0;
+        for (var i = 0; i < number.length; i++) {
+            a = document.createElement('a');
+            a.innerHTML = number[i];
+            a.style.padding = '15px';
+            a.style.marginRight = '10px';
+            a.style.background = 'red';
+            a.style.color = 'white';
+            a.style.fontSize = '16px';
+            a.index = index++;
+            show.appendChild(a);
+        }
+    }
+
+    //限制非法输入
+    function error(input_test) {
+        if (input_test == "") {
+            alert("请输入内容！");
+            return false;
+        } else if (input_test.length > 20) {
+            alert("数字长度溢出！");
+            return false;
+        } else
+            return true;
+    }
+
+</script>
+
+</body>
+</html>
