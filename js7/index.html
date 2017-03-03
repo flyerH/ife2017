@@ -5,11 +5,13 @@
     <meta charset="UTF-8">
     <title>IFE JavaScript Task 07</title>
     <style type="text/css">
+        div{
+            background-color: white;
+        }
         .center {
             margin: 0 auto;
             width: 650px;
         }
-
         .flex-container {
             display: flex;
             width: 600px;
@@ -17,7 +19,6 @@
             justify-content: center;
             border: solid 2px black;
         }
-
         .flex-item {
             border: solid 2px black;
             width: 280px;
@@ -27,7 +28,6 @@
             justify-content: center;
             display: flex;
         }
-
         .flex-item2 {
             border: solid 2px black;
             width: 120px;
@@ -37,7 +37,6 @@
             justify-content: center;
             display: flex;
         }
-
         .flex-item3 {
             border: solid 2px black;
             width: 50px;
@@ -45,7 +44,6 @@
             margin-top: 30px;
             margin-bottom: 30px;
         }
-
         .button_style {
             margin-top: 30px;
             margin-left: 160px;
@@ -105,7 +103,6 @@
         stop();
         switch (target.id) {
             case 'preOrder_Button' :
-                console.log(container);
                 preOrder(container);
                 showProcess(number);
                 break;
@@ -130,7 +127,6 @@
     //先根遍历
     function preOrder(node) {
         if (node) {
-            node.style.backgroundColor = 'white';
             number.push(node);
             preOrder(node.firstElementChild);
             preOrder(node.lastElementChild);
@@ -140,7 +136,6 @@
     //中根遍历
     function midOrder(node) {
         if (node) {
-            node.style.backgroundColor = 'white';
             midOrder(node.firstElementChild);
             number.push(node);
             midOrder(node.lastElementChild);
@@ -150,7 +145,6 @@
     //后根遍历
     function postOrder(node) {
         if (node) {
-            node.style.backgroundColor = 'white';
             postOrder(node.firstElementChild);
             postOrder(node.lastElementChild);
             number.push(node);
@@ -158,7 +152,6 @@
     }
 
     //依次将队列中的元素显示，其实这里应该用普通数组保存更方便
-
     var tempLast = null;       //存放上一次遍历的元素，方便之后将其背景变白,当做全局变量是因为之后点击停止按钮后要清除存在的红色
     function showProcess(num) {
         var tempCurrent = null;         //当前遍历的元素
