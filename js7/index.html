@@ -96,10 +96,13 @@
     var container = document.querySelector(".flex-container");      //绑定最外层节点
     var button = document.getElementsByClassName("button_style")[0];        //绑定按钮
     number = [];        //存储节点
+    var intFlag = false;        //定时器状态
 
     //判断点击的按钮
     function choice(event) {
         target = getTarget(event);
+        number = [];
+        stop();
         switch (target.id) {
             case 'preOrder_Button' :
                 console.log(container);
@@ -155,10 +158,12 @@
     }
 
     //依次将队列中的元素显示，其实这里应该用普通数组保存更方便
+
+    var tempLast = null;       //存放上一次遍历的元素，方便之后将其背景变白,当做全局变量是因为之后点击停止按钮后要清除存在的红色
     function showProcess(num) {
-        var tempLast = null;       //存放上一次遍历的元素，方便之后将其背景变白
         var tempCurrent = null;         //当前遍历的元素
-        int = setInterval(function () {
+        int = window.setInterval(function () {
+            intFlag = true ;
             if (num.length != 0) {
                 if (tempLast) {
                     tempLast.style.backgroundColor = 'white';
@@ -170,13 +175,18 @@
             } else {
                 tempCurrent.style.backgroundColor = 'white';
                 clearInterval(int);
+                intFlag = false ;
                 alert("演示完毕！");
             }
         }, 500)
     }
 
-    function stop() {
-        clearInterval(int);
+    var stop = function() {
+        if (intFlag){
+            clearInterval(int);
+            tempLast.style.backgroundColor = 'white';
+        }
+        intFlag = false ;
     }
 
     function addHandler(element, type, handler) {
