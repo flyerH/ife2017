@@ -1,0 +1,203 @@
+<!--filebox布局-->
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>IFE JavaScript Task 07</title>
+    <style type="text/css">
+        .center {
+            margin: 0 auto;
+            width: 650px;
+        }
+
+        .flex-container {
+            display: flex;
+            width: 600px;
+            height: 230px;
+            justify-content: center;
+            border: solid 2px black;
+        }
+
+        .flex-item {
+            border: solid 2px black;
+            width: 280px;
+            margin: 3px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            justify-content: center;
+            display: flex;
+        }
+
+        .flex-item2 {
+            border: solid 2px black;
+            width: 120px;
+            margin: 3px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            justify-content: center;
+            display: flex;
+        }
+
+        .flex-item3 {
+            border: solid 2px black;
+            width: 50px;
+            margin: 1px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        .button_style {
+            margin-top: 30px;
+            margin-left: 160px;
+        }
+    </style>
+</head>
+<body>
+<div class="center">
+    <p>本程序仅演示完全二叉树的遍历，非完全二叉树需要区分左右节点</p>
+    <div class="flex-container">
+        <div class="flex-item ">
+            <div class="flex-item2">
+                <div class="flex-item3">
+                </div>
+                <div class="flex-item3">
+                </div>
+            </div>
+            <div class="flex-item2">
+                <div class="flex-item3">
+                </div>
+                <div class="flex-item3">
+                </div>
+            </div>
+        </div>
+        <div class="flex-item ">
+            <div class="flex-item2">
+                <div class="flex-item3">
+                </div>
+                <div class="flex-item3">
+                </div>
+            </div>
+            <div class="flex-item2">
+                <div class="flex-item3">
+                </div>
+                <div class="flex-item3">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="button_style">
+        <button id="preOrder_Button">先根遍历</button>
+        <button id="midOrder_Button">中根遍历</button>
+        <button id="postOrder_Button">后根遍历</button>
+        <button id="stop">停止</button>
+    </div>
+</div>
+<script>
+    var container = document.querySelector(".flex-container");      //绑定最外层节点
+    var button = document.getElementsByClassName("button_style")[0];        //绑定按钮
+    number = [];        //存储节点
+
+    //判断点击的按钮
+    function choice(event) {
+        target = getTarget(event);
+        switch (target.id) {
+            case 'preOrder_Button' :
+                console.log(container);
+                preOrder(container);
+                showProcess(number);
+                break;
+            case 'midOrder_Button' :
+                midOrder(container);
+                showProcess(number);
+                break;
+            case 'postOrder_Button' :
+                postOrder(container);
+                showProcess(number);
+                break;
+            case 'stop' :
+                stop();
+                break;
+            default :
+                alert("Wrong!");
+                return false;
+        }
+    }
+    addHandler(button, 'click', choice);
+
+    //先根遍历
+    function preOrder(node) {
+        if (node) {
+            node.style.backgroundColor = 'white';
+            number.push(node);
+            preOrder(node.firstElementChild);
+            preOrder(node.lastElementChild);
+        }
+    }
+
+    //中根遍历
+    function midOrder(node) {
+        if (node) {
+            node.style.backgroundColor = 'white';
+            midOrder(node.firstElementChild);
+            number.push(node);
+            midOrder(node.lastElementChild);
+        }
+    }
+
+    //后根遍历
+    function postOrder(node) {
+        if (node) {
+            node.style.backgroundColor = 'white';
+            postOrder(node.firstElementChild);
+            postOrder(node.lastElementChild);
+            number.push(node);
+        }
+    }
+
+    //依次将队列中的元素显示，其实这里应该用普通数组保存更方便
+    function showProcess(num) {
+        var tempLast = null;       //存放上一次遍历的元素，方便之后将其背景变白
+        var tempCurrent = null;         //当前遍历的元素
+        int = setInterval(function () {
+            if (num.length != 0) {
+                if (tempLast) {
+                    tempLast.style.backgroundColor = 'white';
+                }
+                tempCurrent = num.shift();
+                tempLast = tempCurrent;
+                tempCurrent.style.backgroundColor = 'red';
+                flag = true;
+            } else {
+                tempCurrent.style.backgroundColor = 'white';
+                clearInterval(int);
+                alert("演示完毕！");
+            }
+        }, 500)
+    }
+
+    function stop() {
+        clearInterval(int);
+    }
+
+    function addHandler(element, type, handler) {
+        if (element.addEventListener) {
+            element.addEventListener(type, handler, false);
+        } else if (element.attachEvent) {
+            element.attachEvent("on" + type, handler);
+        } else
+            element["on" + type] = handler;
+    }
+
+    function getEvent(event) {
+        return event ? event : window.event;
+    }
+
+    function getTarget(event) {
+        event = getEvent(event);
+        return event.target || event.srcElement;
+    }
+
+</script>
+
+</body>
+</html>
