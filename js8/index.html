@@ -1,0 +1,275 @@
+<!--flexbox布局-->
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>IFE JavaScript Task 08</title>
+    <style type="text/css">
+        div {
+            background-color: white;
+        }
+        p {
+            align-self: baseline;
+            margin-top: 1%;
+        }
+        input {
+            margin-left: 10px;
+        }
+        .flex-container {
+            display: flex;
+            width: 1200px;
+            height: 200px;
+            justify-content: center;
+            align-items: center;
+            border: solid 1px black;
+        }
+        .flex-item {
+            font-size: 9px;
+            flex-basis: auto;
+            margin: 5% 0.2%;
+            height: 60%;
+            width: 60%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: solid 1px black;
+        }
+        .flex-item2 {
+            margin: 5% 0.5%;
+            height: 60%;
+            width: 74%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: solid 1px black;
+        }
+        .flex-item3 {
+            margin: 5% 1%;
+            height: 60%;
+            width: 74%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: solid 1px black;
+        }
+        .button_style {
+            margin-top: 30px;
+            margin-left: 340px;
+        }
+    </style>
+</head>
+<body>
+<div class="center">
+    <div class="flex-container">
+        <p>super</p>
+        <div class="flex-item ">
+            <p>tea</p>
+            <div class="flex-item2" style="width: 100%">
+                <p>apple</p>
+                <div class="flex-item3">
+                    <p>pear</p>
+                </div>
+                <div class="flex-item3">
+                    <p>pig</p>
+                </div>
+                <div class="flex-item3">
+                    <p>cola</p>
+                </div>
+                <div class="flex-item3">
+                    <p>soccor</p>
+                </div>
+            </div>
+            <div class="flex-item2" style="width: 40%;">
+                <p>phone</p>
+            </div>
+            <div class="flex-item2" style="width: 65%">
+                <div class="flex-item3">
+                    <p>book</p>
+                </div>
+                <div class="flex-item3">
+                    <p>school</p>
+                </div>
+            </div>
+        </div>
+        <div class="flex-item " style="width: 80%">
+            <p>note</p>
+            <div class="flex-item2">
+                <p>human</p>
+                <div class="flex-item3">
+                    <p>code</p>
+                </div>
+                <div class="flex-item3">
+                    <p>operation</p>
+                </div>
+                <div class="flex-item3">
+                    <p>mon</p>
+                </div>
+            </div>
+            <div class="flex-item2">
+                <p>program</p>
+                <div class="flex-item3">
+                    <p>baidu</p>
+                    <div class="flex-item3">
+                        <p>call</p>
+                    </div>
+                </div>
+                <div class="flex-item3">
+                    <p>glass</p>
+                </div>
+            </div>
+        </div>
+        <div class="flex-item " style="width: 25%">
+            <p>fish</p>
+        </div>
+    </div>
+    <div class="button_style">
+        <!--<button id="preOrder_Button">先根遍历</button>
+        <button id="midOrder_Button">中根遍历</button>
+        <button id="postOrder_Button">后根遍历</button>
+        <button id="delete_Button">删除</button>-->
+        <button id="inTOout_Button">由内向外遍历</button>
+        <button id="outTOin_Button">由外向内遍历</button>
+        <button id="stop_Button">停止</button>
+        <input type="text" id="search_Input"/>
+        <button id="search_Button">查找</button>
+    </div>
+</div>
+<script>
+    var container = document.querySelector(".flex-container");      //绑定最外层节点
+    var button = document.getElementsByClassName("button_style")[0];        //绑定按钮
+    var search_Input = document.getElementById("search_Input");
+    var intFlag = false;        //定时器状态
+    var inputFlag = false;      //查找状态
+    number = [];        //存储节点
+
+    //判断点击的按钮
+    function choice(event) {
+        target = getTarget(event);
+        number = [];
+        stop();
+        inputFlag = false;
+        switch (target.id) {
+            case 'inTOout_Button' :
+                inTOoutOrder(container);
+                showProcess(number);
+                break;
+            case 'outTOin_Button' :
+                outTOinOrder(container);
+                showProcess(number);
+                break;
+            case 'stop_Button' :
+                stop();
+                break;
+            case 'delete_Button' :
+                delete_fun();
+                break;
+            case 'search_Button' :
+                if (search_Input.value == "") {
+                    alert("请输入要搜索的内容！")
+                    return false;
+                }
+                inputFlag = true;
+                outTOinOrder(container);
+                showProcess(number);
+                break;
+        }
+    }
+    addHandler(button, 'click', choice);
+
+    //由内向外遍历
+    function inTOoutOrder(node) {
+        if (node.className != 'button_style') {
+            if (node.firstElementChild)
+                inTOoutOrder(node.firstElementChild);
+            number.push(node);
+            if (node.nextElementSibling)
+                inTOoutOrder(node.nextElementSibling);
+        }
+    }
+
+    //由外向内遍历
+    function outTOinOrder(node) {
+        if (node.className != 'button_style') {
+            number.push(node);
+            if (node.firstElementChild)
+                outTOinOrder(node.firstElementChild);
+            if (node.nextElementSibling)
+                outTOinOrder(node.nextElementSibling);
+        }
+    }
+
+    //依次将队列中的元素显示，其实这里应该用普通数组保存更方便
+    var tempLast = null;       //存放上一次遍历的元素，方便之后将其背景变白,当做全局变量是因为之后点击停止按钮后要清除存在的红色
+    function showProcess(num) {
+        var tempCurrent = null;         //当前遍历的元素
+        int = window.setInterval(function () {
+            intFlag = true;
+            if (num.length != 0) {
+
+                tempCurrent = num.shift();
+                if (tempCurrent.tagName != 'P') {
+                    if (tempLast) {
+                        tempLast.style.backgroundColor = 'white';
+                    }
+                    tempLast = tempCurrent;
+                    tempCurrent.style.backgroundColor = 'red';
+                } else if (inputFlag) {
+                    if (tempCurrent.innerHTML == search_Input.value) {
+                        tempLast.style.backgroundColor = 'green';
+                        clearInterval(int);
+                        setTimeout(function () {
+                            alert("找到了节点!");
+                        }, 200)
+                    }
+                }
+                flag = true;
+            } else {
+                tempLast.style.backgroundColor = 'white';
+                clearInterval(int);
+                intFlag = false;
+                if (inputFlag) {
+                    alert("未找到节点！");
+                } else
+                    alert("演示完毕！");
+            }
+        }, 200)
+    }
+
+    var stop = function () {
+        if (intFlag) {
+            clearInterval(int);
+            tempLast.style.backgroundColor = 'white';
+        }
+        intFlag = false;
+    }
+
+    function delete_fun() {
+        if (tempTarget.style.backgroundColor == "green") {
+            tempTarget.parentNode.removeChild(tempTarget);
+        } else {
+            alert("请选择元素！");
+        }
+    }
+
+    function addHandler(element, type, handler) {
+        if (element.addEventListener) {
+            element.addEventListener(type, handler, false);
+        } else if (element.attachEvent) {
+            element.attachEvent("on" + type, handler);
+        } else
+            element["on" + type] = handler;
+    }
+
+    function getEvent(event) {
+        return event ? event : window.event;
+    }
+
+    function getTarget(event) {
+        event = getEvent(event);
+        return event.target || event.srcElement;
+    }
+
+</script>
+
+</body>
+</html>
