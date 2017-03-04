@@ -1,0 +1,223 @@
+<!--flexbox布局-->
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>IFE JavaScript Task 09</title>
+    <style type="text/css">
+        div {
+            background-color: white;
+        }
+        p {
+            align-self: baseline;
+            margin-top: 1%;
+        }
+        input {
+            margin-left: 10px;
+        }
+        .center {
+            width: 1200px;
+            margin:0 auto;
+        }
+        .flex-container {
+            display: flex;
+            width: 1200px;
+            height: 200px;
+            justify-content: center;
+            align-items: center;
+            border: solid 1px black;
+        }
+        .flex-item {
+            font-size: 9px;
+            flex-basis: auto;
+            margin: 5% 0.2%;
+            height: 60%;
+            width: 60%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: solid 1px black;
+        }
+        .flex-item2 {
+            margin: 5% 0.5%;
+            height: 60%;
+            width: 74%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: solid 1px black;
+        }
+        .flex-item3 {
+            margin: 5% 1%;
+            height: 60%;
+            width: 74%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: solid 1px black;
+        }
+        .button_style {
+            margin-top: 30px;
+            margin-left: 430px;
+        }
+    </style>
+</head>
+<body>
+<div class="center">
+    <div class="flex-container">
+        <p>super</p>
+        <div class="flex-item ">
+            <p>tea</p>
+            <div class="flex-item2" style="width: 100%">
+                <p>apple</p>
+                <div class="flex-item3">
+                    <p>pear</p>
+                </div>
+                <div class="flex-item3">
+                    <p>pig</p>
+                </div>
+                <div class="flex-item3">
+                    <p>cola</p>
+                </div>
+                <div class="flex-item3">
+                    <p>soccor</p>
+                </div>
+            </div>
+            <div class="flex-item2" style="width: 40%;">
+                <p>phone</p>
+            </div>
+            <div class="flex-item2" style="width: 65%">
+                <div class="flex-item3">
+                    <p>book</p>
+                </div>
+                <div class="flex-item3">
+                    <p>school</p>
+                </div>
+            </div>
+        </div>
+        <div class="flex-item " style="width: 80%">
+            <p>note</p>
+            <div class="flex-item2">
+                <p>human</p>
+                <div class="flex-item3">
+                    <p>code</p>
+                </div>
+                <div class="flex-item3">
+                    <p>operation</p>
+                </div>
+                <div class="flex-item3">
+                    <p>mon</p>
+                </div>
+            </div>
+            <div class="flex-item2">
+                <p>program</p>
+                <div class="flex-item3">
+                    <p>baidu</p>
+                    <div class="flex-item3">
+                        <p>call</p>
+                    </div>
+                </div>
+                <div class="flex-item3">
+                    <p>glass</p>
+                </div>
+            </div>
+        </div>
+        <div class="flex-item " style="width: 25%">
+            <p>fish</p>
+        </div>
+    </div>
+    <div class="button_style">
+        <button id="delete_Button">删除</button>
+        <button id="stop_Button">停止</button>
+        <input type="text" id="create_Input" placeholder="请输入内容"/>
+        <button id="create_Button">添加</button>
+    </div>
+</div>
+<script>
+    var container = document.querySelector(".flex-container");      //绑定最外层节点
+    var button = document.getElementsByClassName("button_style")[0];        //绑定按钮
+    var create_Input = document.getElementById("create_Input");     //绑定输入框
+
+    //判断点击的按钮
+    function choice(event) {
+        target = getTarget(event);
+        switch (target.id) {
+            case 'create_Button' :
+                create_fun();
+                break;
+            case 'delete_Button' :
+                delete_fun();
+                break;
+        }
+    }
+
+    addHandler(button, 'click', choice);
+
+    var tempTarget = null;
+    function choose(event) {
+        if (tempTarget) {
+            tempTarget.style.backgroundColor = 'white';
+        }
+        event = getEvent(event);
+        target = getTarget(event);
+        if (target.tagName == 'P')
+        target = target.parentElement;
+        tempTarget = target;
+        target.style.backgroundColor = 'green';
+        event.stopPropagation();
+    }
+    addHandler(container, 'click', choose);
+
+    //点击空白处清除已选目标
+    addHandler(window, 'click', function () {
+        if (tempTarget) {
+            if (target != create_Input)
+            tempTarget.style.backgroundColor = 'white';
+        }
+    })
+
+    //添加节点元素
+    function create_fun() {
+        if (!create_Input.value){
+            alert("请输入内容!");
+        }
+        if (tempTarget.style.backgroundColor == "green"){
+            var div = document.createElement('DIV');
+            var p = document.createElement('P');
+            div.className = 'flex-item2';
+            p.innerText = create_Input.value;
+            div.appendChild(p);
+            tempTarget.appendChild(div);
+        }
+    }
+
+    //删除节点元素
+    function delete_fun() {
+        if (tempTarget.style.backgroundColor == "green") {
+            tempTarget.parentNode.removeChild(tempTarget);
+        } else {
+            alert("请选择元素！");
+        }
+    }
+
+    //浏览器兼容
+    function addHandler(element, type, handler) {
+        if (element.addEventListener) {
+            element.addEventListener(type, handler, false);
+        } else if (element.attachEvent) {
+            element.attachEvent("on" + type, handler);
+        } else
+            element["on" + type] = handler;
+    }
+
+    function getEvent(event) {
+        return event ? event : window.event;
+    }
+
+    function getTarget(event) {
+        event = getEvent(event);
+        return event.target || event.srcElement;
+    }
+</script>
+</body>
+</html>
