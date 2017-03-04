@@ -74,9 +74,9 @@
             name_Input.style.borderColor = 'red';
             return false;
         }
-        var reg = new RegExp("[\\u0391-\\uFFE5_a-zA-Z0-9]{4,16}");      //限制输入为中文全半角字符、英文字符、下划线和数字
-        var result = reg.test(name_Input.value);
-        if (result) {
+        var checkZh=name_Input.value;
+        var count = checkZh.replace(/[\u0391-\uFFE5]/g,'xx').length;
+        if (count >=4) {
             topic.innerText = '名称格式正确';
             topic.style.color = '#66BA4C';
             name_Input.style.borderColor = '#66BA4C';
