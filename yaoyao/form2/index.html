@@ -106,7 +106,7 @@
     var flag = false;        //校验标志
     for (var i = 0; i < getInput.length; i++) {
         getInput[i].onfocus = function () {
-            var getTopic = document.getElementById(this.id + '_topic');//这里不能用getInput[i]代替this
+            var getTopic = document.getElementById(this.id + '_topic');     //这里不能用getInput[i]代替this
             getTopic.style.display = 'block';
             this.style.boxShadow = '0 0 8px rgb(98,173,238)';
         };
@@ -194,6 +194,7 @@
         }
     }
 
+    //绑定提交按钮
     var submit_button = document.getElementById('submit_button');
     if (submit_button.addEventListener) {
         submit_button.addEventListener('click', submit_form, false);
@@ -202,12 +203,16 @@
     } else
         submit_button['onclick'] = submit_form;
 
+    //通过将每个input设置焦点，来进行全局校验，通过的个数等于input的数量则全局校验通过
     function submit_form() {
+        var count =0;
         for (var i = 0; i < getInput.length; i++) {
             getInput[i].focus();
             getInput[i].blur();
+            if (flag)
+            count++;
         }
-        if (flag) {
+        if (count == getInput.length) {
             alert("验证通过！");
         } else {
             alert("输入有误！");
