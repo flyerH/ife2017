@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>IFE Form Task 02</title>
+</head>
+<style>
+    body {
+        background-color: #EEF3FA;
+        height: 900px;
+    }
+
+    input {
+        width: 20em;
+        height: 30px;
+        border: solid 1px rgb(210, 210, 210);
+        border-radius: 5px;
+        font-size: 20px;
+        box-shadow: rgba(0, 0, 0, 0.1) 0 0 8px;
+        -moz-box-shadow: rgba(0, 0, 0, 0.1) 0 0 8px;
+        -webkit-box-shadow: rgba(0, 0, 0, 0.1) 0 0 8px;
+    }
+
+    button {
+        background-color: #337CB9;
+        border-radius: 5px;
+        border: none;
+        font-size: 1em;
+        padding: 0px 12px;
+        color: white;
+        height: 2.1em;
+        cursor: pointer;
+    }
+
+    .base {
+        background-color: white;
+        width: 800px;
+        height: 100%;
+        padding-top: 10%;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .title {
+        font-size: 1em;
+        width: 4em;
+        padding-right: 10px;
+        font-weight: 600;
+        height: 2em;
+        text-align: right;
+        display: inline-block;
+    }
+
+    .topic {
+        font-size: 1em;
+        color: #AAAAAA;
+        margin: 5px 90px;
+        display: none;
+        text-align: left;
+    }
+
+    .block {
+        margin-top: 1em;
+    }
+
+    .block_button {
+        margin-top: 1em;
+        text-align: right;
+    }
+</style>
+<body>
+<div class="base">
+    <div style="width: 490px;text-align: center;margin: 0 auto ">
+        <div class="block">
+            <label class="title" style="">名称</label>
+            <input type="text" id="name_Input"/>
+            <span class="topic" id="name_Input_topic">必填，长度为4～16位字符</span>
+        </div>
+        <div class="block">
+            <label class="title" style="">密码</label>
+            <input type="text" id="pwd_Input"/>
+            <span class="topic" id="pwd_Input_topic">必填，格式为6～20位数字与字母的组合</span>
+        </div>
+        <div class="block">
+            <label class="title" style="">确认密码</label>
+            <input type="text" id="pwd2_Input"/>
+            <span class="topic" id="pwd2_Input_topic">请再输入一次密码</span>
+        </div>
+        <div class="block">
+            <label class="title" style="">邮箱</label>
+            <input type="text" id="email_Input"/>
+            <span class="topic" id="email_Input_topic">请输入邮箱地址</span>
+        </div>
+        <div class="block">
+            <label class="title" style="">手机号</label>
+            <input type="text" id="phone_Input"/>
+            <span class="topic" id="phone_Input_topic">请输入手机号</span>
+        </div>
+        <div class="block_button">
+            <button id="submit_button">提交</button>
+        </div>
+    </div>
+</div>
+<script>
+    var getInput = document.getElementsByTagName('input');
+    var flag = false;        //校验标志
+    for (var i = 0; i < getInput.length; i++) {
+        getInput[i].onfocus = function () {
+            var getTopic = document.getElementById(this.id + '_topic');//这里不能用getInput[i]代替this
+            getTopic.style.display = 'block';
+            this.style.boxShadow = '0 0 8px rgb(98,173,238)';
+        };
+        getInput[i].onblur = function () {
+            check_fun(this);
+        };
+    }
+
+    //讲获取焦点和移除焦点绑定到input上
+    function check_fun(ele) {
+        var topic = document.getElementById(ele.id + '_topic');
+        var label_value = ele.parentNode.querySelector('.title').innerHTML;
+        if (ele.value == "") {
+            topic.innerText = label_value + '不能为空';
+            topic.style.color = 'red';
+            ele.style.boxShadow = '0 0 8px #FF0000';
+        }
+        switch (ele.id) {
+            case 'name_Input' :     //名称验证
+                var checkZh = ele.value;
+                var count = checkZh.replace(/[\u0391-\uFFE5]/g, 'xx').length;
+                if (count >= 4 && count <= 16) {
+                    topic.innerText = '名称格式正确';
+                    check_true();
+                } else {
+                    topic.innerText = '请输入字符长度在4～16之间';
+                    check_false();
+                }
+                break;
+            case 'pwd_Input' :      //密码验证
+                var exp = new RegExp("^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]{6,20})$");
+                if (exp.test(ele.value)) {
+                    topic.innerText = '密码格式正确';
+                    check_true();
+                } else {
+                    topic.innerText = '请输入6～20位包含数字和字母的密码';
+                    check_false();
+                }
+                break;
+
+            case 'pwd2_Input' :     //二次密码验证
+                var pwd = document.getElementById('pwd_Input');
+                if (ele.value == pwd.value && ele.value != '') {
+                    topic.innerText = '密码正确';
+                    check_true();
+                } else {
+                    topic.innerText = '两次密码输入不一致！';
+                    check_false();
+                }
+                break;
+
+            case 'email_Input' :  //邮箱验证
+                var reg = /^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/;
+                if (reg.test(ele.value)) {
+                    topic.innerText = '邮箱正确';
+                    check_true();
+                } else {
+                    topic.innerText = '请输入正确的邮箱';
+                    check_false();
+                }
+                break;
+            case 'phone_Input' :        //手机验证
+                var reg = /^1[3|4|5|7|8|][\d]\d{8}$/;
+                if (reg.test(ele.value)) {
+                    topic.innerText = '手机号正确';
+                    check_true();
+                } else {
+                    topic.innerText = '请输入正确的手机号';
+                    check_false();
+                }
+                break;
+        }
+
+        function check_true() {     //检测通过，修改input样式
+            topic.style.color = '#66BA4C';
+            ele.style.boxShadow = '0 0 8px #66BA4C';
+            flag = true;
+        }
+
+        function check_false() {        //检测失败，修改input样式
+            topic.style.color = 'red';
+            ele.style.boxShadow = '0 0 8px #FF0000';
+            flag = false;
+            return false;
+        }
+    }
+
+    var submit_button = document.getElementById('submit_button');
+    if (submit_button.addEventListener) {
+        submit_button.addEventListener('click', submit_form, false);
+    } else if (submit_button.attachEvent) {
+        submit_button.attachEvent('onclick', submit_form);
+    } else
+        submit_button['onclick'] = submit_form;
+
+    function submit_form() {
+        for (var i = 0; i < getInput.length; i++) {
+            getInput[i].focus();
+            getInput[i].blur();
+        }
+        if (flag) {
+            alert("验证通过！");
+        } else {
+            alert("输入有误！");
+        }
+    }
+
+</script>
+</body>
+</html>
