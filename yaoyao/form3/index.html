@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>IFE Form Task 03</title>
+    <style>
+        html {
+            height: 100%;
+        }
+
+        body {
+            background-color: #EEF3FA;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+
+        .base {
+            background-color: white;
+            width: 60%;
+            height: 100%;
+            margin: 0 auto;
+        }
+
+        .choice {
+            text-align: center;
+            padding-top: 100px;
+        }
+
+        .choice label:first-child {
+            margin-right: 200px;
+        }
+
+        .place label:first-child {
+            margin-right: 50px;
+        }
+
+        .place {
+            text-align: center;
+            padding-top: 50px;
+            display: none;
+        }
+
+        .place span {
+            margin-right: 20px;
+        }
+
+        select {
+            width: 200px;
+        }
+
+        input[type='text'] {
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+<div class="base">
+    <div class="choice">
+        <label><input type="radio" name="team1" id="inschool"/>在校生</label>
+        <label><input type="radio" name="team1" id="inwork"/>非在校生</label>
+    </div>
+    <div class="place" id="school_div">
+        <label>
+            学校
+            <select id="city">
+                <option>请选择</option>
+            </select>
+        </label>
+        <label>
+            <select id="school">
+                <option>请选择</option>
+            </select>
+        </label>
+    </div>
+    <div class="place" id="work_div">
+        <span>就业单位</span><input type="text"/>
+    </div>
+</div>
+
+<script>
+    var city = document.getElementById('city');
+    var school = document.getElementById('school');
+    var inschool = document.getElementById('inschool');
+    var inwork = document.getElementById('inwork');
+    var choice = document.querySelector('.choice');
+    var school_div = document.getElementById('school_div');
+    var work_div = document.getElementById('work_div');
+
+    var city_option = new Array(new Option('请选择', ''), new Option('北京', 'bj'), new Option('湖南', 'hn'));
+    var school_option = new Array();
+    school_option[0] = new Array(new Option('请选择', ''));
+    school_option[1] = new Array(new Option('北京大学', 'bjdx'), new Option('清华大学', 'qhdx'));
+    school_option[2] = new Array(new Option('湖南涉外经济学院', 'hnswjjxy'));
+
+    for (var i = 0; i < city_option.length; i++) {
+        city.options[i] = city_option[i];     //名字取的太相似了，失策失策
+    }
+
+    function addHandle(element, type, handle) {
+        if (element.addEventListener) {
+            element.addEventListener('change', handle, false);
+        } else if (ctiy.attachEvent) {
+            element.attachEvent('onchange', handle);
+        } else
+            element['onchange'] = handle;
+    }
+
+    addHandle(city, '', pushSchooloption);      //监听city下拉框的变化，并修改对应学校名称
+    addHandle(choice, '', changediv);       //监听radio变化，切换显示div
+
+    function changediv() {
+        if (inschool.checked) {
+            school_div.style.display = 'block';
+            work_div.style.display = 'none';
+        } else {
+            school_div.style.display = 'none';
+            work_div.style.display = 'block';
+        }
+    }
+
+    function pushSchooloption() {
+        school.options.length = 0;
+        var index = city.selectedIndex;
+        for (var i = 0; i < school_option[index].length; i++) {
+            school.options[i] = school_option[index][i];
+        }
+    }
+
+    inschool.click();       //默认选择“在校生”radio
+</script>
+</body>
+</html>
