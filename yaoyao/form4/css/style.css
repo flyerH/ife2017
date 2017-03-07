@@ -1,0 +1,91 @@
+html {
+    width: 100%;
+}
+
+body {
+    width: 100%;
+}
+
+.base {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.chessboard {
+    width: 330px;
+    margin: 50px auto;
+    border-collapse: collapse;
+}
+
+tr {
+    padding: 0;
+    margin: 0;
+    height: 30px;
+}
+
+td {
+    margin: 0;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    border: solid 1px #E5E5E5;
+}
+
+.title {
+    margin: 0;
+    padding: 0;
+}
+
+tr:first-child td {
+    border: none;
+    border-bottom: solid 2px black;
+}
+
+tr:last-child td {
+    border-bottom: solid 2px black;
+}
+
+td:nth-child(2) {
+    border-left: solid 2px black;
+}
+
+td:last-child {
+    border-right: solid 2px black;
+}
+
+p {
+    margin: 0;
+    padding: 0;
+    background-color: blue;
+}
+
+.vertical ,.turnLeft,.turnRight{
+    width: 40%;
+    height: 100%;
+    margin: 0;
+    background-color: blue;
+}
+
+.forward,.turnLeft,.turnRight{
+    top: 0;
+}
+
+.back {
+    bottom: 0;
+}
+
+.horizontal,.forward,.back {
+    width: 100%;
+    height: 40%;
+    margin: 0;
+    background-color: blue;
+}
+
+.turnLeft,.forward,.back{
+    left: 0;
+}
+
+.turnRight {
+    right: 0;
+}
