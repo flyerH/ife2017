@@ -26,15 +26,18 @@ for (var i = 1; i <= 10; i++) {
     chessboard.appendChild(tr);
 }
 
-addHandler(button, 'click', changeD);
+addHandler(button, 'click', inputOrder);
 
+function inputOrder() {
+    var order = document.getElementsByTagName('input')[0].value.toUpperCase();
+    changeD(order);
+}
 //改变方向
-function changeD() {
+function changeD(order) {
     var p = document.getElementById('p' + pos);
     var td = document.getElementById('td' + pos);
     var next_p = null;
     var next_td = null;
-    var order = document.getElementsByTagName('input')[0].value.toUpperCase();
 
     switch (order) {
         case 'GO':
@@ -64,33 +67,36 @@ function changeD() {
                 next_td.style.backgroundColor = 'red';
             }
             if (dir == 4) {
-                 if (--pos % 10 == 0)
+                if (--pos % 10 == 0)
                     error(0);
                 next_p = document.getElementById('p' + pos);
                 next_td = document.getElementById('td' + pos);
                 next_p.className = p.className;
                 next_td.style.backgroundColor = 'red';
             }
+            next_p.style.backgroundColor = 'blue';
             break;
         case 'TUN LEF' :
-            if (dir==1)
-                dir=4;
+            if (dir == 1)
+                dir = 4;
             else
-            dir = (--dir) % 4;
+                dir = (--dir) % 4;
             p.className = dir_arr[dir];
             break;
         case 'TUN RIG' :
-            dir = (++dir) % 4;
+            dir = (dir + 1) % 4;
+            if (dir == 0)
+                dir = 4;
             p.className = dir_arr[dir];
             break;
         case 'TUN BAC' :
             dir = (dir + 2) % 4;
+            if (dir == 0)
+                dir = 4;
             p.className = dir_arr[dir];
             break;
     }
 }
-var t = 3 % 4;
-console.log(t);
 function error(pos) {
     if (pos < 1 || pos > 100) {
         alert('超出边界！');
@@ -100,10 +106,35 @@ function error(pos) {
 
 }
 
+addHandler(document, 'keydown', keyboard);
+
+function keyboard(e) {
+    var event = getEvent(e);
+    switch (event.keyCode) {
+        case 38:
+            e.preventDefault();
+            changeD('GO');
+            break;
+        case 40:
+            e.preventDefault();
+            changeD('TUN BAC');
+            break;
+        case 37:
+            e.preventDefault();
+            changeD('TUN LEF');
+            break;
+        case 39:
+            e.preventDefault();
+            changeD('TUN RIG');
+            break;
+    }
+}
+
 window.onload = function () {
     var start = document.getElementById('td' + pos);
     p = document.getElementById('p' + pos);
     p.className = 'forward';
+    p.style.backgroundColor = 'blue';
     start.appendChild(p);
     start.style.backgroundColor = 'red';
     dir = 1;
