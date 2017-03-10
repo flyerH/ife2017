@@ -1,0 +1,98 @@
+html {
+    width: 100%;
+}
+
+body {
+    width: 100%;
+}
+
+*{
+
+}
+.base {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.chessboard {
+    width: 330px;
+    margin: 50px auto;
+    border-collapse: collapse;
+    overflow: hidden;
+}
+
+tr {
+    padding: 0;
+    margin: 0;
+    height: 30px;
+    text-align: center;
+}
+
+* {
+
+    box-sizing: border-box;
+}
+
+td {
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    border: solid 1px #E5E5E5;
+}
+
+.title {
+    margin: 0;
+    padding: 0;
+}
+
+tr:first-child td {
+    border: none;
+    border-bottom: solid 2px black;
+}
+
+tr:last-child td {
+    border-bottom: solid 2px black;
+}
+
+td:nth-child(2) {
+    border-left: solid 2px black;
+}
+
+td:last-child {
+    border-right: solid 2px black;
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}
+
+.turnLeft {
+    border-left: solid 10px blue;
+}
+
+.turnRight {
+    border-right: solid 10px blue;
+}
+
+.forward {
+    border-top: solid 10px blue;
+}
+
+.back {
+    border-bottom: solid 10px blue;
+}
+
+.turnLeft, .turnRight, .forward, .back {
+    background-color: red;
+    transition: background 0.5s ease-out;
+    width: 100%;
+    height: 100%;
+}
+
+
+.turnLeft, .turnRight, .forward, .back {
+}
