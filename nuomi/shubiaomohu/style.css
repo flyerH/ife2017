@@ -80,7 +80,8 @@ img {
 }
 
 .base:hover img {
-    filter: blur(2px);
+    filter: blur(3px);
+    -webkit-filter: blur(3px);
 }
 
 .stream {
