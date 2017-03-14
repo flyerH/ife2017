@@ -1,6 +1,7 @@
 /**
  * Created by He on 2017/3/14.
  */
+'use strict';
 function Observer(data) {
     this.data = data;
     this.walk(data);
