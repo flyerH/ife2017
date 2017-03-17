@@ -2,7 +2,7 @@
  * Created by He on 2017/3/15.
  */
 'use strict';
-function Observer(data, parent = 'root') {
+function Observer(data, parent) {
     this.data = data;
     this.walk(data, parent);
 }
@@ -33,7 +33,6 @@ Observer.prototype = {
             },
             set: function (newVal) {
                 console.log('你设置了' + key + ',新的值为' + newVal);
-                console.log();
                 if (oberseredList[parent])
                     oberseredList[parent](newVal);
                 if (newVal === val) return;
@@ -73,4 +72,4 @@ app2.data.name.lastName = 'blablabla';
 // 输出：我的姓名发生了变化，可能是姓氏变了，也可能是名字变了。
 
 app2.data.test.one;
-app2.data.test.two='3';
+app2.data.test.two = '3';
