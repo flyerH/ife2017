@@ -6,6 +6,7 @@ function Observer(data) {
     this.data = data;
     this.walk(data);
 }
+let oberseredList = {};
 Observer.prototype = {
     walk: function (obj) {
         let val;
@@ -20,8 +21,7 @@ Observer.prototype = {
         }
     },
     $watch: function (ele, fn) {
-        this.ele = ele;
-        this.fn = fn;
+        oberseredList[ele]=fn;
     },
     convert: function (key, val) {
         Object.defineProperty(this.data, key, {
@@ -32,18 +32,14 @@ Observer.prototype = {
                 return val
             },
             set: function (newVal) {
-                console.log('你设置了' + key);
-                console.log('新的' + key + ' = ' + newVal)
+                console.log('你设置了' + key + ',新的值为' + newVal);
+                console.log();
+                if (oberseredList[key])
+                oberseredList[key](newVal);
                 if (newVal === val) return;
                 if (typeof newVal == "object") {
                     new Observer(newVal);
-                }
-                if (this.ele) {
-                    newVal.$watch(this.ele, this.fn);
-                    if (this.ele == key) {
-                        this.fn(val);
-                    }
-                }
+                }               
                 val = newVal;
             }
         })
