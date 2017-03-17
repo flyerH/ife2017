@@ -60,7 +60,7 @@ obj.c.d;
 
 let app1 = new Observer({
     name: 'youngwind',
-    age: 25
+    age: 26
 });
 
 app1.data.name = {
