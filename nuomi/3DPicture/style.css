@@ -1,0 +1,70 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.main {
+
+    width: 350px;
+    height: 150px;
+    perspective: 1800px;
+    margin: 200px auto 0 auto;
+}
+
+.box div {
+    position: absolute;
+    width: 350px;
+    height: 150px;
+    opacity: .8;
+    border-radius: 15px;
+}
+
+.box {
+    transform-style: preserve-3d;
+    animation: around 15s linear infinite;
+}
+
+@keyframes around {
+    0% {
+        transform: rotateY(0deg);
+    }
+    100% {
+        transform: rotateY(360deg);
+    }
+}
+
+.one {
+    transform: rotateY(0deg) translateZ(520px);
+}
+
+.two {
+    transform: rotateY(40deg) translateZ(520px);
+}
+
+.three {
+    transform: rotateY(80deg) translateZ(520px);
+}
+
+.four {
+    transform: rotateY(120deg) translateZ(520px);
+}
+
+.five {
+    transform: rotateY(160deg) translateZ(520px);
+}
+
+.six {
+    transform: rotateY(200deg) translateZ(520px);
+}
+
+.seven {
+    transform: rotateY(240deg) translateZ(520px);
+}
+
+.eight {
+    transform: rotateY(280deg) translateZ(520px);
+}
+
+.nine {
+    transform: rotateY(320deg) translateZ(520px);
+}
